@@ -36,10 +36,16 @@ PImage greatwall;
 PVector location;
 PVector velocity;
 PVector gravity;
+PVector sliderForce;
+
+//Fireworks
+ParticleSystem ps;
 
 void setup() {
   size(640, 480);
   background(0);
+
+  ps = new ParticleSystem(new PVector(width/2, 50));
 
   //Load Dragon Image and Resize
   dragon = loadImage("dragon.png");
@@ -67,6 +73,7 @@ void setup() {
   location = new PVector( width/2, height/2);
   velocity = new PVector(1.5, 2.1);
   gravity = new PVector(0, 0.2);
+  sliderForce = new PVector (0.0, 0.0);
 
   font = loadFont("CharlemagneStd-Bold-32.vlw");
   textFont(font, 24);
@@ -79,16 +86,20 @@ void draw() {
 
   //Make posX the Value of the Remote Slider 
   posX = remote_slider_val;
-  posX = map(remote_slider_val, 0, 1024, .5, 4);
+  posX = map(remote_slider_val, 0, 1024, .5, .8);
   // Draw a Circle at the X Value of the Slider
   ellipse(posX, posY, 20, 20);
+  sliderForce.set(posX/2, 0.0);
+
 
   location.add(velocity);
   velocity.add(gravity);
+  // Adding Slider Force makes it freak out  
+  //  gravity.add(sliderForce);
 
   // Yo Dragon, if you get to the edges, turn around
   if ((location.x > width) || (location.x < 0)) {
-    velocity.x = velocity.x * -1;
+    velocity.x = velocity.x * -0.98;
   }
 
   // Dragon, when you hit the floor, dont fall through, and lose some
@@ -110,6 +121,11 @@ void draw() {
   textFont(font, 18);
   text("Remote Slider Value: ", 10, 460);  
   text(posX, 400, 460);
+
+  if (currentColor == 1) {
+    ps.addParticle();
+    ps.run();
+  }
 }
 
 void onRangeMessage( String name, int value ) {
@@ -122,10 +138,11 @@ void onBooleanMessage( String name, boolean value ) {
 
   // update background color
   if (value == true) {
-    currentColor = color_on;
+    currentColor = 1;
+    println("ayooo button");
   } 
   else {
-    currentColor = color_off;
+    currentColor = 0;
   }
 }
 
