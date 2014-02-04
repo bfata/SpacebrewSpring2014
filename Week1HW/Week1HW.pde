@@ -23,11 +23,15 @@ color color_off = color(255, 255, 255);
 
 int currentColor = color_off;
 
-int posX;
-int posY;
+float posX;
+float posY;
+
+PFont font;
+
 
 //Dragon Image
 PImage dragon;
+PImage greatwall;
 
 PVector location;
 PVector velocity;
@@ -40,6 +44,7 @@ void setup() {
   //Load Dragon Image and Resize
   dragon = loadImage("dragon.png");
   dragon.resize(163, 216);
+  greatwall = loadImage("greatwall.png");
 
 
   // instantiate the spacebrewConnection variable
@@ -62,46 +67,49 @@ void setup() {
   location = new PVector( width/2, height/2);
   velocity = new PVector(1.5, 2.1);
   gravity = new PVector(0, 0.2);
+
+  font = loadFont("CharlemagneStd-Bold-32.vlw");
+  textFont(font, 24);
 }
 
 void draw() {
-  background(255,0,0);
+  background(255, 0, 0);
   stroke(0);
   posY = 50;
 
-  //Make posX the Value of the Remote Slider
+  //Make posX the Value of the Remote Slider 
   posX = remote_slider_val;
+  posX = map(remote_slider_val, 0, 1024, .5, 4);
   // Draw a Circle at the X Value of the Slider
   ellipse(posX, posY, 20, 20);
 
-  // Line the slider moves on
-  fill(150);
-  line(0, height * 3/4, width, height * 3/4);
-
-  // Remote Controlled Slider
-  fill(255, 255, 100, 100);
-  stroke(200, 200, 50);
-  rect(remote_slider_val, (height/2) + 5, 20, (height/2) - 10);
-
-  // Display the current value of remote slider
-  fill(0);
-  text("Remote Slider Value: ", 10, 460);  
-  text(remote_slider_val, 150, 460);  
-
   location.add(velocity);
   velocity.add(gravity);
-  
+
+  // Yo Dragon, if you get to the edges, turn around
   if ((location.x > width) || (location.x < 0)) {
     velocity.x = velocity.x * -1;
   }
-    if (location.y > height - 70) {
-    // We're reducing velocity ever so slightly 
-    // when it hits the bottom of the window
-    velocity.y = velocity.y * -0.95; 
-//    location.y = height;
+
+  // Dragon, when you hit the floor, dont fall through, and lose some
+  // velocity
+  if (location.y > height - 70) {
+    // We're reducing velocity ever so slightly when it hits the bottom
+    velocity.y = velocity.y * -0.95;
   }
+  // Draw the Great Wall + Dragon + Happy New Year
+  image(greatwall, width/2, height/2);
+  fill(255, 0, 0);
+  text("Happy New Year!", 20, 30);
+
   imageMode(CENTER);
   image(dragon, location.x, location.y);
+
+  // Display the current value of remote slider
+  fill(255);
+  textFont(font, 18);
+  text("Remote Slider Value: ", 10, 460);  
+  text(posX, 400, 460);
 }
 
 void onRangeMessage( String name, int value ) {
