@@ -20,17 +20,23 @@ int remote_slider_val = 512;
 int posX;
 int posY;
 
+//Dragon Image
 PImage dragon;
 
+//Change to this Color when you get a boolean message
 color color_on = color(255, 255, 50);
 color color_off = color(255, 255, 255);
+
 int currentColor = color_off;
 
 void setup() {
-  size(1044, 200);
+  size(640, 480);
   background(0);
-  
+
+  //Load Dragon Image and Resize
   dragon = loadImage("dragon.png");
+  dragon.resize(163, 216);
+
 
   // instantiate the spacebrewConnection variable
   sb = new Spacebrew( this );
@@ -51,20 +57,18 @@ void setup() {
 }
 
 void draw() {
-  image(dragon, 0, 0);
   background( currentColor );
   stroke(0);
   posY = 50;
+
+  //Make posX the Value of the Remote Slider
   posX = remote_slider_val;
+  // Draw a Circle at the X Value of the Slider
   ellipse(posX, posY, 20, 20);
 
-  // Display the current value of remote slider
-  fill(255);
-  text("Remote Slider Value: ", 30, 60);  
-  text(remote_slider_val, 180, 60);  
 
   // White box containing slider
-  fill(255);
+  fill(255, 0, 0);
   rect(0, height/2, width, height/2);
 
   // Line the slider moves on
@@ -76,6 +80,12 @@ void draw() {
   stroke(200, 200, 50);
   rect(remote_slider_val, (height/2) + 5, 20, (height/2) - 10);
 
+  // Display the current value of remote slider
+  fill(0);
+  text("Remote Slider Value: ", 30, 460);  
+  text(remote_slider_val, 180, 460);  
+
+  image(dragon, 0, 0);
 }
 
 void onRangeMessage( String name, int value ) {
@@ -88,10 +98,10 @@ void onBooleanMessage( String name, boolean value ) {
 
   // update background color
   if (value == true) {
-        currentColor = color_on;
+    currentColor = color_on;
   } 
   else {
-        currentColor = color_off;
+    currentColor = color_off;
   }
 }
 
