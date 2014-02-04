@@ -17,17 +17,21 @@ Spacebrew sb;
 // Keep track of our current place in the range
 int remote_slider_val = 512;
 
+//Change to this Color when you get a boolean message
+color color_on = color(255, 255, 50);
+color color_off = color(255, 255, 255);
+
+int currentColor = color_off;
+
 int posX;
 int posY;
 
 //Dragon Image
 PImage dragon;
 
-//Change to this Color when you get a boolean message
-color color_on = color(255, 255, 50);
-color color_off = color(255, 255, 255);
-
-int currentColor = color_off;
+PVector location;
+PVector velocity;
+PVector gravity;
 
 void setup() {
   size(640, 480);
@@ -54,10 +58,14 @@ void setup() {
 
   // connect!
   sb.connect(server, name, description );
+
+  location = new PVector( width/2, height/2);
+  velocity = new PVector(1.5, 2.1);
+  gravity = new PVector(0, 0.2);
 }
 
 void draw() {
-  background( currentColor );
+  background(255,0,0);
   stroke(0);
   posY = 50;
 
@@ -65,11 +73,6 @@ void draw() {
   posX = remote_slider_val;
   // Draw a Circle at the X Value of the Slider
   ellipse(posX, posY, 20, 20);
-
-
-  // White box containing slider
-  fill(255, 0, 0);
-  rect(0, height/2, width, height/2);
 
   // Line the slider moves on
   fill(150);
@@ -82,10 +85,23 @@ void draw() {
 
   // Display the current value of remote slider
   fill(0);
-  text("Remote Slider Value: ", 30, 460);  
-  text(remote_slider_val, 180, 460);  
+  text("Remote Slider Value: ", 10, 460);  
+  text(remote_slider_val, 150, 460);  
 
-  image(dragon, 0, 0);
+  location.add(velocity);
+  velocity.add(gravity);
+  
+  if ((location.x > width) || (location.x < 0)) {
+    velocity.x = velocity.x * -1;
+  }
+    if (location.y > height - 70) {
+    // We're reducing velocity ever so slightly 
+    // when it hits the bottom of the window
+    velocity.y = velocity.y * -0.95; 
+//    location.y = height;
+  }
+  imageMode(CENTER);
+  image(dragon, location.x, location.y);
 }
 
 void onRangeMessage( String name, int value ) {
