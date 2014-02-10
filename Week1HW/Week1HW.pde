@@ -86,16 +86,16 @@ void draw() {
 
   //Make posX the Value of the Remote Slider 
   posX = remote_slider_val;
-  posX = map(remote_slider_val, 0, 1024, .5, .8);
+  posX = map(remote_slider_val, 0, 1024, -.005, .005);
   // Draw a Circle at the X Value of the Slider
   ellipse(posX, posY, 20, 20);
-  sliderForce.set(posX/2, 0.0);
+  sliderForce.set(posX, 0.0);
 
 
   location.add(velocity);
   velocity.add(gravity);
   // Adding Slider Force makes it freak out  
-  //  gravity.add(sliderForce);
+  gravity.add(sliderForce);
 
   // Yo Dragon, if you get to the edges, turn around
   if ((location.x > width) || (location.x < 0)) {

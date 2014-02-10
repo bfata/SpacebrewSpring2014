@@ -8,8 +8,8 @@ class Particle {
   color particleColor;
 
   Particle(PVector l) {
-    acceleration = new PVector(0,0.05);
-    velocity = new PVector(random(-1,1),random(-2,0));
+    acceleration = new PVector(0, 0.05);
+    velocity = new PVector(random(-1, 1), random(-2, 0));
     location = l.get();
     lifespan = 255.0;
   }
@@ -28,17 +28,19 @@ class Particle {
 
   // Method to display
   void display() {
-    stroke(255,lifespan);
-    fill(255,lifespan);
-    ellipse(location.x,location.y,8,8);
+    stroke(255, lifespan);
+    fill(random(255), random(255), random(255), lifespan);
+    ellipse(location.x, location.y, 8, 8);
   }
-  
+
   // Is the particle still useful?
   boolean isDead() {
     if (lifespan < 0.0) {
       return true;
-    } else {
+    } 
+    else {
       return false;
     }
   }
 }
+
