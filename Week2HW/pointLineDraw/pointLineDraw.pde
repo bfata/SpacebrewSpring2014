@@ -10,7 +10,7 @@ final static int RADIUS = 90;
 void setup() {
   size(1000, 800, P2D);
   smooth();
-  initialize();
+  //  initialize();
 }
 
 void initialize() {
@@ -38,7 +38,7 @@ void draw() {
   //Set up background for a fade effect
   fill(255, 255, 255, 50);
   rect(0, 0, width, height);
-  
+
   stroke(0, 50);
   for (int i=0; i<nbPts-1; i++) {
     for (int j=i+1; j<nbPts; j++) {
