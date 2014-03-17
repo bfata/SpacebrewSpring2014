@@ -1,8 +1,10 @@
 /*
- * Button Example
- *
- *   Spacebrew library button example that send and receives boolean messages.  
- * 
+Prototype Tug of War Game developed as part of the Spacebrew Collab
+ at Parsons The New School for Design Spring 2014
+ 
+ Thanks to Bret Renfer and Julio Terra
+ 
+ -BFata
  */
 import spacebrew.*;
 
@@ -39,7 +41,7 @@ void draw() {
   // set background color
   background( currentColor );
 
-  // draw button
+  // draw buttons
   fill(255, 0, 0);
   stroke(200, 0, 0);
   rectMode(CENTER);
@@ -47,49 +49,35 @@ void draw() {
   fill(0, 0, 255);
   rect(width*.75, height/2, 150, 150);
 
-  // add text to button
+  // add text to buttons
   fill(230);
   textAlign(CENTER);
   textSize(24);
+  text("Red", width/4, height/2);
+  text("Blue", width * .75, height/2);
 
   if (mousePressed == true && mouseX < width/2 ) {
-    text("Clicked", width/4, height/2 + 12);
+    text("Clicked", width/4, height/2 + 24);
     //     sb.send( "button1_pressed", true);
   }
   if (mousePressed ==true && mouseX > width/2 ) {
-    text("Clicked", width * .75, height/2 + 12);
-  }
-  else {
-    text("Red", width/4, height/2);
-    text("Blue", width * .75, height/2);
+    text("Clicked", width * .75, height/2 + 24);
   }
 }
 
-void mousePressed() {
+void mouseClicked() {
   // send message to spacebrew
   if (mouseX < width/2) {
     sb.send( "button1_pressed", true);
+    println("button1");
   } 
   else {
     sb.send( "button2_pressed", true);
+    println("button2");
   }
 }
 
-void mouseReleased() {
-  // send message to spacebrew
-  //  sb.send( "button1_pressed", false);
-  //  sb.send( "button2_pressed", false);
-}
-
 void onBooleanMessage( String name, boolean value ) {
-  println("got bool message " + name + " : " + value); 
-
-  // update background color
-  //  if (value == true) {
-  //    currentColor = color_on;
-  //  } 
-  //  else {
-  //    currentColor = color_off;
-  //  }
+  println("got bool message " + name + " : " + value);
 }
 
