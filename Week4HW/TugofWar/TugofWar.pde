@@ -18,9 +18,11 @@ color color_on = color(255, 255, 50);
 color color_off = color(255, 255, 255);
 int currentColor = color_off;
 
+PImage img;
+
 void setup() {
   frameRate(240);
-  size(500, 400);
+  size(800, 600);
 
   // instantiate the spacebrewConnection variable
   sb = new Spacebrew( this );
@@ -29,23 +31,22 @@ void setup() {
   sb.addPublish( "button1_pressed", "boolean", false ); 
   sb.addPublish( "button2_pressed", "boolean", false );
 
-
-  // declare your subscribers
-
-
-  // connect to spacebre
+  // connect to spacebrew
   sb.connect(server, name, description );
+
+  img = loadImage("TOWBackground.png");
 }
 
 void draw() {
   // set background color
-  background( currentColor );
+  background( img );
 
   // draw buttons
   fill(255, 0, 0);
-  stroke(200, 0, 0);
+  stroke(255, 0, 0);
   rectMode(CENTER);
   rect(width*.25, height/2, 150, 150);
+  stroke(0, 0, 255);
   fill(0, 0, 255);
   rect(width*.75, height/2, 150, 150);
 
@@ -58,7 +59,6 @@ void draw() {
 
   if (mousePressed == true && mouseX < width/2 ) {
     text("Clicked", width/4, height/2 + 24);
-    //     sb.send( "button1_pressed", true);
   }
   if (mousePressed ==true && mouseX > width/2 ) {
     text("Clicked", width * .75, height/2 + 24);
@@ -69,11 +69,9 @@ void mouseClicked() {
   // send message to spacebrew
   if (mouseX < width/2) {
     sb.send( "button1_pressed", true);
-    println("button1");
   } 
   else {
     sb.send( "button2_pressed", true);
-    println("button2");
   }
 }
 
