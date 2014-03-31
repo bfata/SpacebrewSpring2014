@@ -6,10 +6,11 @@ Prototype Tug of War Game developed as part of the Spacebrew Collab
  
  -BFata
  */
+ 
 import spacebrew.*;
-
+float randNum = random(1000);
 String server="54.201.24.223";
-String name="Tug of War";
+String name="Tug of War" +randNum;
 String description ="An epic struggle between two teams.";
 
 Spacebrew sb;
