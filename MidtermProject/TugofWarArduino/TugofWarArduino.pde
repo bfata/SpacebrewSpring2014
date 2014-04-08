@@ -65,7 +65,7 @@ void draw() {
   // Write an value to the servos, telling them to go to the corresponding
   // angle (for standard servos) or move at a particular speed (continuous
   // rotation servos).
-  arduino.servoWrite(7, servoPos);
+  arduino.servoWrite(9, servoPos);
 }
 
 void onBooleanMessage( String name, boolean value ) {
