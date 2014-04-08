@@ -17,12 +17,14 @@ String description ="An epic struggle between two teams.";
 
 Spacebrew sb;
 
+int servoPos = 90;
 int arduinoPos;
 int startPos;
 int scoreCount;
 
 void setup() {
-  size(360, 200);
+  frameRate(60);
+  size(640, 480);
 
   // Prints out the available serial ports.
   println(Arduino.list());
@@ -32,12 +34,7 @@ void setup() {
   // printed by the line above).
   arduino = new Arduino(this, Arduino.list()[2], 57600);
 
-  // Alternatively, use the name of the serial port corresponding to your
-  // Arduino (in double-quotes), as in the following line.
-  //arduino = new Arduino(this, "/dev/tty.usbmodem621", 57600);
-
-  // Configure digital pins 4 and 7 to control servo motors.
-  arduino.pinMode(4, Arduino.SERVO);
+  // Configure digital pin 7 to control servo motors.
   arduino.pinMode(7, Arduino.SERVO);
 
   // instantiate the spacebrewConnection variable
@@ -48,8 +45,8 @@ void setup() {
 
 
   // declare your subscribers
-  sb.addSubscribe( "button1", "boolean");
-  sb.addSubscribe( "button2", "boolean");
+  sb.addSubscribe( "red_click", "boolean");
+  sb.addSubscribe( "blue_click", "boolean");
 
   // connect to spacebre
   sb.connect(server, name, description );
@@ -58,22 +55,29 @@ void setup() {
 }
 
 void draw() {
-  background(constrain(mouseX / 2, 0, 180));
-  
+  background(255);
+
   line(50, height/2, width-50, height/2);
+  fill(0);
+  textSize(32);
+  text( servoPos, 10, 30);
 
   // Write an value to the servos, telling them to go to the corresponding
   // angle (for standard servos) or move at a particular speed (continuous
   // rotation servos).
-  arduino.servoWrite(7, scoreCount);
+  arduino.servoWrite(7, servoPos);
 }
 
 void onBooleanMessage( String name, boolean value ) {
   println("got bool message " + name + " : " + value); 
- 
-  if (value == true) {
-    scoreCount += 1;
-  }
 
+  if (name.equals("red_click")) {
+    servoPos += 2;
+    println(servoPos);
+  }
+  if (name.equals("blue_click")) {
+    servoPos -= 2;
+    println(servoPos);
+  }
 }
 
