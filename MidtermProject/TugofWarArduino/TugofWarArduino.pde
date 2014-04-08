@@ -35,7 +35,7 @@ void setup() {
   arduino = new Arduino(this, Arduino.list()[2], 57600);
 
   // Configure digital pin 7 to control servo motors.
-  arduino.pinMode(7, Arduino.SERVO);
+  arduino.pinMode(9, Arduino.SERVO);
 
   // instantiate the spacebrewConnection variable
   sb = new Spacebrew( this );
@@ -51,7 +51,7 @@ void setup() {
   // connect to spacebre
   sb.connect(server, name, description );
 
-  arduino.servoWrite(7, 180);
+  arduino.servoWrite(9, servoPos);
 }
 
 void draw() {
