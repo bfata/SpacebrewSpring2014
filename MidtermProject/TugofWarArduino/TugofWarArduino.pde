@@ -11,7 +11,7 @@ import spacebrew.*;
 Arduino arduino;
 //Spacebrew Setup
 
-String server="54.201.24.223";
+String server="sandbox.spacebrew.cc";
 String name="Tug of War Arduino Controller";
 String description ="An epic struggle between two teams.";
 
