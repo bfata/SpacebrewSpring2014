@@ -1,3 +1,22 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import ddf.minim.*; 
+import spacebrew.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class TugofWar extends PApplet {
+
 /*
 Prototype Tug of War Game developed as part of the Spacebrew Collab
  at Parsons The New School for Design Spring 2014
@@ -7,11 +26,11 @@ Prototype Tug of War Game developed as part of the Spacebrew Collab
  -BFata
  */
  // import minim
-import ddf.minim.*;
+
 
 
 // import spacebrew
-import spacebrew.*;
+
 float randNum = random(1000);
 String server="sandbox.spacebrew.cc";
 String name="Tug of War" +randNum;
@@ -29,15 +48,15 @@ int team1Score;
 int team2Score;
 int battleUISize;
 int battlePos;
-color button1Color, button2Color;
-color button1Highlight, button2Highlight;
+int button1Color, button2Color;
+int button1Highlight, button2Highlight;
 boolean overButton1 = false;
 boolean overButton2 = false;
 
 Minim minim;
 AudioPlayer player;
 
-void setup() {
+public void setup() {
   frameRate(240);
   size(800, 600);
   
@@ -75,7 +94,7 @@ void setup() {
   img = loadImage("TOWBackground.png");
 }
 
-void draw() {
+public void draw() {
   update(mouseX, mouseY);
   // set background color
   background( img );
@@ -90,25 +109,27 @@ void draw() {
 
   // draw Battle Progress Bar
   fill(255, 0, 0); //button 1 color
-  rect(width/2, height*.82, battleUISize, 25);
+  rect(width/2, height*.82f, battleUISize, 25);
   fill(0, 0, 255); //button 2 color
-  rect(width/2, height*.82, battleUISize-battlePos, 25);
+  rect(width/2, height*.82f, battleUISize-battlePos, 25);
 
   // add text to buttons
   fill(230);
   textAlign(CENTER);
   textSize(24);
+  text("Red", button1X, button1Y);
+  text("Blue", button2X, button2Y);
 
   // show text when they've been clicked
   if (mousePressed == true && overButton1 ) {
-    text("Clicked", button1X, height/2);
+    text("Clicked", button1X, height/2 + 24);
   }
   if (mousePressed ==true && overButton2 ) {
-    text("Clicked", button2X, height/2);
+    text("Clicked", button2X, height/2 + 24);
   }
 }
 
-void update(int x, int y) {
+public void update(int x, int y) {
   // What happens when you hover over Button1
   if ( overButton1(button1X, button1Y, button1Size) ) {
     overButton1 = true;
@@ -133,7 +154,7 @@ void update(int x, int y) {
 
 }
 
-void mousePressed() {
+public void mousePressed() {
   if (overButton1) {
     battlePos+=10;
     // send message to spacebrew
@@ -148,11 +169,11 @@ void mousePressed() {
   }
 }
 
-void onBooleanMessage( String name, boolean value ) {
+public void onBooleanMessage( String name, boolean value ) {
   println("got bool message " + name + " : " + value);
 }
 
-boolean overButton1(int x, int y, int button1Size) {
+public boolean overButton1(int x, int y, int button1Size) {
   float disX = x - mouseX;
   float disY = y - mouseY;
   if (sqrt(sq(disX) + sq(disY)) < button1Size/2 ) {
@@ -163,7 +184,7 @@ boolean overButton1(int x, int y, int button1Size) {
   }
 }
 
-boolean overButton2(int x, int y, int button2Size) {
+public boolean overButton2(int x, int y, int button2Size) {
   float disX = x - mouseX;
   float disY = y - mouseY;
   if (sqrt(sq(disX) + sq(disY)) < button2Size/2 ) {
@@ -174,3 +195,12 @@ boolean overButton2(int x, int y, int button2Size) {
   }
 }
 
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "TugofWar" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}
